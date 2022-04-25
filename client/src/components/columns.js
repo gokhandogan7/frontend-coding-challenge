@@ -1,31 +1,48 @@
+import { ColumnFilter } from "./ColumnFilter";
+
 export const COLUMNS = [
     {
         Header: 'Id',
-        accessor: 'id'
+        accessor: 'id',
+        Filter: ColumnFilter,
+        disableFilters: true
+        
+
     },
     {
         Header: 'Name',
-        accessor: 'userName'
+        accessor: 'userName',
+        Filter: ColumnFilter,
+        disableFilters: true
     },
     {
         Header: 'Type of Absence',
-        accessor: 'type'
+        accessor: 'type',
+        Filter: ColumnFilter,
+        
     },
     {
         Header: 'Period',
-        accessor:'period'
+        accessor:'period',
+        Filter: ColumnFilter,
     },
     {
         Header: 'Member Note',
-        accessor: 'memberNote'
+        accessor: 'memberNote',
+        Filter: ColumnFilter,
+        disableFilters: true
     },
     {
         Header: 'Status',
-        accessor:'status'
+        accessor:'status',
+        Filter: ColumnFilter,
+        disableFilters: true
     },
     {
         Header: 'Admitter Note',
-        accessor:'admitterNote'
+        accessor:'admitterNote',
+        Filter: ColumnFilter,
+        disableFilters: true
     },
 ]
 
