@@ -4,10 +4,15 @@ import { COLUMNS } from "./columns";
 import "./table.css";
 import { absenceServices } from "../services/absenceService";
 import { BounceLoader } from "react-spinners";
+import { getApiErrorMessage } from "../utils/getErrorMesage";
+import { Button } from "./ui/Button";
+import { Input } from "./ui/Input";
+import { TableFooterContainer } from "./ui/TableFooterContainer";
 
 export const AbsenceTable = () => {
   const columns = useMemo(() => COLUMNS, []);
   const [absences, setAbsences] = useState([]);
+  const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
   const fetchData = async () => {
@@ -18,7 +23,9 @@ export const AbsenceTable = () => {
       setLoading(false);
       setAbsences(data.payload);
     } catch (error) {
+      console.log(JSON.stringify(error.response.status));
       setLoading(false);
+      setErrorMessage(getApiErrorMessage(error));
     }
   };
   console.log(loading, absences);
@@ -53,12 +60,16 @@ export const AbsenceTable = () => {
   console.log(absences.length);
 
   const { pageIndex } = state;
+  const handleChange = (e) => {
+    const pageNumber = e.target.value ? Number(e.target.value) - 1 : 0;
+    gotoPage(pageNumber);
+  };
 
   return (
     <div>
-      {loading ? (
-        <BounceLoader color={"#fca138"} size={150} loading />
-      ) : (
+      {loading && <BounceLoader color={"#fca138"} size={150} loading />}
+      {!!errorMessage && <p>{errorMessage}</p>}
+      {!errorMessage && !loading && (
         <>
           <table {...getTableProps()}>
             <thead>
@@ -91,7 +102,7 @@ export const AbsenceTable = () => {
               })}
             </tbody>
           </table>
-          <div>
+          <TableFooterContainer>
             <span>
               Page{""}
               <strong>
@@ -99,43 +110,40 @@ export const AbsenceTable = () => {
               </strong>
             </span>
             <span>
-              Results{""}
+              | Results{""}
               <strong>
                 {page.length} of {absences.length}
               </strong>
             </span>
             <span>
-              | Goaa to Page : {""}
-              <input
-                type="number"
-                min="1"
+              | Go to Page : {""}
+              <Input
                 max={pageOptions.length}
                 defaultValue={pageIndex + 1}
-                onChange={(e) => {
-                  const pageNumber = e.target.value
-                    ? Number(e.target.value) - 1
-                    : 0;
-                  gotoPage(pageNumber);
-                }}
-                style={{ width: 50 }}
+                onChange={handleChange}
               />
             </span>
-            <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-              {"<<"}
-            </button>
-            <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-              Previous
-            </button>
-            <button onClick={() => nextPage()} disabled={!canNextPage}>
-              Next
-            </button>
-            <button
+            <Button
+              title="<<"
+              onClick={() => gotoPage(0)}
+              disabled={!canPreviousPage}
+            />
+            <Button
+              title="Previous Page"
+              onClick={previousPage}
+              disabled={!canPreviousPage}
+            />
+            <Button
+              title="Next Page"
+              onClick={nextPage}
+              disabled={!canNextPage}
+            />
+            <Button
+              title=">>"
               onClick={() => gotoPage(pageCount - 1)}
               disabled={!canNextPage}
-            >
-              {">>"}
-            </button>
-          </div>
+            />
+          </TableFooterContainer>
         </>
       )}
     </div>
