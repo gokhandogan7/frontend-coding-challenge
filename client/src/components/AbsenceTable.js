@@ -19,16 +19,15 @@ export const AbsenceTable = () => {
     try {
       setLoading(true);
       const data = await absenceServices.getAllAbsences();
-      console.log(data);
       setLoading(false);
       setAbsences(data.payload);
     } catch (error) {
-      console.log(JSON.stringify(error.response.status));
+
       setLoading(false);
       setErrorMessage(getApiErrorMessage(error));
     }
   };
-  console.log(loading, absences);
+ 
   useEffect(() => {
     fetchData();
   }, []);
@@ -57,7 +56,7 @@ export const AbsenceTable = () => {
     pageCount,
     prepareRow,
   } = tableInstance;
-  console.log(absences.length);
+
 
   const { pageIndex } = state;
   const handleChange = (e) => {
