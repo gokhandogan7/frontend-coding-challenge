@@ -1,10 +1,10 @@
 import React from "react";
+import "./table.css";
 
 export const ColumnFilter = ({
   column: { filterValue, setFilter, preFilteredRows, id },
 }) => {
-  // Calculate the options for filtering
-  // using the preFilteredRows
+  
   const options = React.useMemo(() => {
     const options = new Set();
     preFilteredRows.forEach((row) => {
@@ -13,7 +13,7 @@ export const ColumnFilter = ({
     return [...options.values()];
   }, [id, preFilteredRows]);
 
-  // Render a multi-select box
+  
   return (
     <select
       value={filterValue}
