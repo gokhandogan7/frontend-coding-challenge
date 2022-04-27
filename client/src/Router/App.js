@@ -1,7 +1,6 @@
 import "./App.css";
-import { AbsenceTable } from "./components/AbsenceTable";
-import { HomePage } from "./components/HomePage";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { AbsenceTable, HomePage } from "../pages";
 
 function App() {
   return (

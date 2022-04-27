@@ -1,13 +1,11 @@
+import "./table.css";
 import React, { useMemo, useEffect, useState } from "react";
 import { useTable, useFilters, usePagination } from "react-table";
-import { COLUMNS } from "./columns";
-import "./table.css";
-import { absenceServices } from "../services/absenceService";
+import { COLUMNS } from "../../constants/columns";
+import { absenceServices } from "../../services/absenceService";
 import { BounceLoader } from "react-spinners";
-import { getApiErrorMessage } from "../utils/getErrorMesage";
-import { Button } from "./ui/Button";
-import { Input } from "./ui/Input";
-import { TableFooterContainer } from "./ui/TableFooterContainer";
+import { getApiErrorMessage } from "../../utils/getErrorMesage";
+import { TableFooter } from "../../components";
 
 export const AbsenceTable = () => {
   const columns = useMemo(() => COLUMNS, []);
@@ -22,12 +20,11 @@ export const AbsenceTable = () => {
       setLoading(false);
       setAbsences(data.payload);
     } catch (error) {
-
       setLoading(false);
       setErrorMessage(getApiErrorMessage(error));
     }
   };
- 
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -41,31 +38,11 @@ export const AbsenceTable = () => {
     usePagination
   );
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    page,
-    nextPage,
-    previousPage,
-    canNextPage,
-    canPreviousPage,
-    pageOptions,
-    state,
-    gotoPage,
-    pageCount,
-    prepareRow,
-  } = tableInstance;
-
-
-  const { pageIndex } = state;
-  const handleChange = (e) => {
-    const pageNumber = e.target.value ? Number(e.target.value) - 1 : 0;
-    gotoPage(pageNumber);
-  };
+  const { getTableProps, getTableBodyProps, headerGroups, page, prepareRow } =
+    tableInstance;
 
   return (
-    <div>
+    <div className = 'tableContainer'>
       {loading && <BounceLoader color={"#fca138"} size={150} loading />}
       {!!errorMessage && <p>{errorMessage}</p>}
       {!errorMessage && !loading && (
@@ -101,48 +78,7 @@ export const AbsenceTable = () => {
               })}
             </tbody>
           </table>
-          <TableFooterContainer>
-            <span>
-              Page{""}
-              <strong>
-                {pageIndex + 1} of {pageOptions.length}
-              </strong>
-            </span>
-            <span>
-              | Results{""}
-              <strong>
-                {page.length} of {absences.length}
-              </strong>
-            </span>
-            <span>
-              | Go to Page : {""}
-              <Input
-                max={pageOptions.length}
-                defaultValue={pageIndex + 1}
-                onChange={handleChange}
-              />
-            </span>
-            <Button
-              title="<<"
-              onClick={() => gotoPage(0)}
-              disabled={!canPreviousPage}
-            />
-            <Button
-              title="Previous Page"
-              onClick={previousPage}
-              disabled={!canPreviousPage}
-            />
-            <Button
-              title="Next Page"
-              onClick={nextPage}
-              disabled={!canNextPage}
-            />
-            <Button
-              title=">>"
-              onClick={() => gotoPage(pageCount - 1)}
-              disabled={!canNextPage}
-            />
-          </TableFooterContainer>
+          <TableFooter absences={absences} tableInstance={tableInstance} />
         </>
       )}
     </div>

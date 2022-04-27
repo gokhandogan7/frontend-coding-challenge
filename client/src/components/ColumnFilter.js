@@ -1,5 +1,4 @@
 import React from "react";
-import "./table.css";
 
 export const ColumnFilter = ({
   column: { filterValue, setFilter, preFilteredRows, id },

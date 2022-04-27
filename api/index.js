@@ -10,5 +10,5 @@ app.get("/api/absences", getAllAbsences )
 
 
 app.listen(5000, ()=>{
-    console.log("server is activated at port 5000")
+    console.log("Listening port 5000")
 })

@@ -3,7 +3,6 @@ const membersData = require("../json_files/members.json");
 
 const getAllAbsences = (req, res) => {
   const populatedAbsenceData = absencesData.payload.map((absence) => {
-    //absences'in users idsinden members'i bulucaz.
     const memberInfo = membersData.payload.find(
       (member) => member.userId === absence.userId
     );
